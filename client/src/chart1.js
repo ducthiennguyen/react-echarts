@@ -26,6 +26,7 @@ class Chart1 extends Component {
     .then(results => {
       return results.json();
     }).then(data => {
+      console.log(data);
       let values = data['Time Series FX (Daily)'];
       for (var date in values) {
         date_array.unshift(date);
