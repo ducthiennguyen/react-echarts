@@ -5,7 +5,8 @@ var func = 'TIME_SERIES_DAILY';
 var symbol = 'MSFT';
 var apikey = '4ZHSS420ZVOBWM4I';
 
-var URL = `https://www.alphavantage.co/query?function=${func}&symbol=${symbol}&apikey=${apikey}`
+// var URL = `https://www.alphavantage.co/query?function=${func}&symbol=${symbol}&apikey=${apikey}`
+var URL = 'http://localhost:12321/chart2'
 var date_array = [];
 var close_values = [];
 
@@ -39,7 +40,6 @@ class Chart2 extends Component {
   }
 
   render() {
-    console.log(close_values.length);
     return (
       <ReactEcharts
         option={{

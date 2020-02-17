@@ -7,7 +7,7 @@ var to_symbol = 'JPY';
 var apikey = '4ZHSS420ZVOBWM4I';
 
 // var URL = `https://www.alphavantage.co/query?function=${func}&from_symbol=${from_symbol}&to_symbol=${to_symbol}&interval=1min&apikey=${apikey}`;
-var URL = 'http://localhost:12321'
+var URL = 'http://localhost:12321/chart1'
 
 var date_array = [];
 var close_values = [];
@@ -43,7 +43,6 @@ class Chart1 extends Component {
   }
 
   render() {
-    console.log(close_values.length);
     return (
       <div>
         <ReactEcharts

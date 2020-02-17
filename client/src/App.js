@@ -12,7 +12,7 @@ class App extends Component {
       <div id = 'main'>
         <h1>Charts</h1>
         <Chart1 />
-        <Chart2 />
+        /*<Chart2 />*/
       </div>
     );
   }
