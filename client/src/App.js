@@ -12,6 +12,10 @@ class App extends Component {
       <div id = 'main'>
         <h1>Charts</h1>
         <Chart1 />
+<<<<<<< HEAD
+=======
+        /*<Chart2 />*/
+>>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
       </div>
     );
   }

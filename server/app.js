@@ -3,7 +3,11 @@ const fetch = require('node-fetch');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://thien:ndt12321@graphqlstart-70zq3.mongodb.net/test?retryWrites=true&w=majority";
+<<<<<<< HEAD
 const url = "mongodb://127.0.0.1:27017/react-echarts";
+=======
+const url = "mongodb://127.0.0.1:27017/";
+>>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
 
 var func1 = 'FX_DAILY';
 var func2 = 'TIME_SERIES_DAILY';
@@ -44,7 +48,14 @@ async function async_update() {
 app.get('/chart1', (req, res) => {
 
   fetch(URLChart1)
+<<<<<<< HEAD
      .then(results => { return results.json() })
+=======
+     .then(results => {
+       console.log('results starts at ', new Date());
+       return results.json();
+     })
+>>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
      .then(data => {
        console.log('fetch function starts at ', new Date());
        // console.log(data);
@@ -57,12 +68,19 @@ app.get('/chart1', (req, res) => {
          }
        }
        console.log('fetch function stops at ', new Date());
+<<<<<<< HEAD
        res.send(date_array, close_values);
+=======
+>>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
      })
      .then(() => async_update())
      .catch(err => {
        console.log(err);
      });
+<<<<<<< HEAD
+=======
+  res.send('done');
+>>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
 });
 
 // app.get('/chart2', (req, res) => {
