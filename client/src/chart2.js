@@ -43,12 +43,9 @@ class Chart2 extends Component {
     return (
       <ReactEcharts
         option={{
-<<<<<<< HEAD
           tooltip: {
             trigger: 'item'
           },
-=======
->>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
           xAxis: {
             type: 'category',
             data: this.state.date_array

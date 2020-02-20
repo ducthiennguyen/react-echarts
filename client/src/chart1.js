@@ -9,6 +9,7 @@ var apikey = '4ZHSS420ZVOBWM4I';
 // var URL = `https://www.alphavantage.co/query?function=${func}&from_symbol=${from_symbol}&to_symbol=${to_symbol}&interval=1min&apikey=${apikey}`;
 var URL = 'http://localhost:12321/chart1'
 
+var ticker_array = [];
 var date_array = [];
 var close_values = [];
 
@@ -16,6 +17,7 @@ class Chart1 extends Component {
   constructor() {
     super();
     this.state = {
+      ticker_array: [],
       date_array: [],
       close_values: []
     };
@@ -26,18 +28,12 @@ class Chart1 extends Component {
     .then(results => {
       return results.json();
     }).then(data => {
-      console.log(data);
-      let values = data['Time Series FX (Daily)'];
-      for (var date in values) {
-        date_array.unshift(date);
-        close_values.unshift(parseFloat(values[date]["3. low"]));
-        if (date_array.length >= 30) {
-          break;
-        }
+      for (let item in data) {
+        console.log(item);
       }
       this.setState({
-        date_array: date_array,
-        close_values: close_values
+        date_array: data.date_array,
+        close_values: data.close_values
       });
     })
   }
@@ -47,12 +43,9 @@ class Chart1 extends Component {
       <div>
         <ReactEcharts
           option={{
-<<<<<<< HEAD
             tooltip: {
               trigger: 'item'
             },
-=======
->>>>>>> cc26074fbbec7f6b4d1459f99153ec0a73c7cbdf
             xAxis: {
               type: 'category',
               data: this.state.date_array
