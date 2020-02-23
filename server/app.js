@@ -14,50 +14,49 @@ class api {
   }
 }
 
-USDJPY = new api(`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=JPY&interval=1min&apikey=${apikey}`, 'USDJPY');
-EURJPY = new api(`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=EUR&to_symbol=JPY&interval=1min&apikey=${apikey}`, 'EURJPY');
-GBPJPY = new api(`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=GBP&to_symbol=JPY&interval=1min&apikey=${apikey}`, 'GBPJPY');
+USDJPY = new api(`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=JPY&apikey=${apikey}`, 'USDJPY');
+EURJPY = new api(`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=EUR&to_symbol=JPY&apikey=${apikey}`, 'EURJPY');
+GBPJPY = new api(`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=GBP&to_symbol=JPY&apikey=${apikey}`, 'GBPJPY');
 Dow = new api(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=DOW&apikey=${apikey}`, 'Dow');
 Nikkei = new api(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=NTETF&apikey=${apikey}`, 'Nikkei');
 Shanghai = new api(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=SGHIF&apikey=${apikey}`, 'Shanghai');
 Nomura = new api(`https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=NMR&apikey=${apikey}`, 'Nomura');
 
-api_list = [[`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=JPY&interval=1min&apikey=${apikey}`, 'USDJPY'],
-            [`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=EUR&to_symbol=JPY&interval=1min&apikey=${apikey}`, 'EURJPY']];
+api_list = [[`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=USD&to_symbol=JPY&apikey=${apikey}`, 'USDJPY'],
+            [`https://www.alphavantage.co/query?function=FX_DAILY&from_symbol=EUR&to_symbol=JPY&apikey=${apikey}`, 'EURJPY']];
 
 app = express();
 app.use(cors());
 
-var completedData = {};
+async function fetchURLs() {
+  try {
+    var data = await Promise.all([
+      fetch(USDJPY.url).then(results => results.json()),
+      fetch(EURJPY.url).then(results => results.json())
+    ]);
 
-app.get('/chart1', (req, res) => {
-  for (let i in api_list) {
-    let item = api_list[i];
-    fetch(item[0])
-       .then(results => { return results.json() })
-       .then(data => {
-         let parsedData = parse_data(data, item[1]);
-         console.log(parsedData);
-         Object.assign(completedData, parsedData);
-       })
-       .then(() => update(date_array, close_values))
-       .catch(err => {
-         console.log(err);
-       });
+    var currencyData = {};
+
+    currencyData['USDJPY'] = parse_data(data[0]);
+    currencyData['EURJPY'] = parse_data(data[1]);
+    // console.log(currencyData);
+
+    app.get('/chart1', (req, res) => {
+      res.send(currencyData);
+    });
+
+    return currencyData;
+  } catch (err) {
+    console.log(err);
   }
-  res.send(completedData);
-});
+}
 
-// app.get('/chart2', (req, res) => {
-//   fetch(URLChart2)
-//      .then(res => res.json())
-//      .then(data => {
-//         res.send(data);
-//      })
-//      .catch(err => {
-//         res.redirect('/error');
-//      });
-// });
+fetchURLs()
+  .then(data => {
+    console.log('Data: ', data);
+    update(data['USDJPY'], 'USDJPY');
+    update(data['EURJPY'], 'EURJPY');
+  });
 
 var port = 12321;
 

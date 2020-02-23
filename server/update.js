@@ -1,21 +1,21 @@
 const MongoClient = require('mongodb').MongoClient;
 const url = "mongodb://127.0.0.1:27017/react-echarts";
 
-module.exports = async function update(date_array, close_values) {
+module.exports = async function update(data, ticker) {
   const client = await MongoClient.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
     .catch(err => { console.log(err); });
 
   const dbo = client.db('react-echarts');
-  let collection = dbo.collection('chart1');
-  for (let i = 0; i < 30; i++) {
-    let date = date_array[i];
-    let close_val = close_values[i];
+  let collection = dbo.collection(ticker);
+  for (let i = 0; i < data.length; i++) {
+    let date = data[i][0];
+    let close_price = data[i][1];
     let updated = await collection.updateOne(
       { _id: i },
-      { $set: {date: date, close_val: close_val} },
+      { $set: {date: date, close_price: close_price} },
       { upsert: true }
     )
-    // console.log(updated.modifiedCount, updated.upsertedId);
+    console.log(ticker, updated.modifiedCount, updated.upsertedId);
   }
   client.close();
 }
